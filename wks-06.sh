@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Workshop Script to sign a PDF document (cms signature with static cert)
+# Workshop Script to sign a PDF document (OnDemand certificate)
 # Arguments: <infile> <outfile> <dn> <msisdn> <message> <en|de|fr|it>
 # Example:   ./wks-06.sh sample.pdf sample-ondemand.pdf "cn=Hans Muster,o=ACME,c=CH" 41797895164 "Sign sample.pdf ?" en
 

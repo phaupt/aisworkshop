@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Workshop Script to retrieve a detached timestamp token
+# Workshop Script to produce a detached trusted timestamp
 # Arguments: <infile> <outfile>
 # Example:   ./wks-01.sh sample.pdf sample.p7s
 

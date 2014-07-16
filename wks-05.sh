@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Workshop Script to retrieve a detached static cms signature (ElDI-V)
+# Workshop Script to produce a detached signature (OnDemand certificate)
 # Arguments: <infile> <outfile> <dn> <msisdn> <message> <en|de|fr|it>
 # Example:   ./wks-05.sh sample.pdf sample.p7s "cn=Hans Muster,o=ACME,c=CH" 41797895164 "Sign sample.pdf ?" en
 

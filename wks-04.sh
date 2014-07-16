@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Workshop Script to sign a PDF document (cms signature with static cert)
+# Workshop Script to sign a PDF document (ElDI-V static certificate)
 # Arguments: <infile> <outfile>
 # Example:   ./wks-04.sh sample.pdf sample-static.pdf
 

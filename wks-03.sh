@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Workshop Script to retrieve a detached static cms signature (ElDI-V)
+# Workshop Script to produce a detached signature (ElDI-V static certificate)
 # Arguments: <infile> <outfile>
 # Example:   ./wks-03.sh sample.pdf sample.p7s
 
