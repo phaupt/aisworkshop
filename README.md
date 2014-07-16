@@ -1,4 +1,2 @@
-aisworkshop
+All-in Signing Service (AIS) - Workshop
 ===========
-
-Swisscom All-in Signing Service (AIS) Workshop
