@@ -1,11 +1,11 @@
 #!/bin/sh
 #
-# Workshop Script to retrieve a detached timestamp token
-# Arguments: <infile> <outfile>
-# Example:   ./wks-01.sh sample.pdf sample.p7s
+# Workshop Script to retrieve a detached static cms signature (ElDI-V)
+# Arguments: <infile> <outfile> <dn> <msisdn> <message> <en|de|fr|it>
+# Example:   ./wks-05.sh sample.pdf sample.p7s "cn=Hans Muster,o=ACME,c=CH" 41797895164 "Sign sample.pdf ?" en
 
 # CLAIMED_ID used to identify to AIS (provided by Swisscom)
-CLAIMED_ID="IAM-Test"
+CLAIMED_ID="IAM-Test:OnDemand-Advanced"
 
 # Swisscom AIS credentials
 CERT_FILE=$PWD/mycert.crt                       # The certificate that is allowed to access the service
@@ -27,6 +27,12 @@ FILE=$1
 PKCS7_RESULT=$3
 [ -f "$PKCS7_RESULT" ] && rm -f "$PKCS7_RESULT"
 
+# OnDemand Arguments
+ONDEMAND_DN=$3
+MID_MSISDN=$4
+MID_MSG=$5
+MID_LANG=$6
+
 # Calculate the hash to be signed
 DIGEST_VALUE=$(openssl dgst -binary -SHA256 $FILE | openssl enc -base64 -A)
 
@@ -40,8 +46,19 @@ REQ_XML='
           <ClaimedIdentity>
               <Name>'$CLAIMED_ID'</Name>
           </ClaimedIdentity>
-          <SignatureType>urn:ietf:rfc:3161</SignatureType>
-          <AdditionalProfile>urn:oasis:names:tc:dss:1.0:profiles:timestamping</AdditionalProfile>
+          <AdditionalProfile>http://ais.swisscom.ch/1.0/profiles/ondemandcertificate</AdditionalProfile>    
+          <sc:CertificateRequest>
+              <sc:DistinguishedName>'$ONDEMAND_DN'</sc:DistinguishedName>
+              <sc:StepUpAuthorisation>
+                  <sc:MobileID Type="http://ais.swisscom.ch/1.0/auth/mobileid/1.0">
+                      <sc:MSISDN>'$MID_MSISDN'</sc:MSISDN>
+                      <sc:Message>'$MID_MSG'</sc:Message>
+                      <sc:Language>'$MID_LANG'</sc:Language>
+                  </sc:MobileID>
+              </sc:StepUpAuthorisation>
+          </sc:CertificateRequest>
+          <SignatureType>urn:ietf:rfc:3369</SignatureType>
+          <AddTimestamp Type="urn:ietf:rfc:3161"/>
           <sc:AddRevocationInformation Type="BOTH"/>
       </OptionalInputs>
       <InputDocuments>

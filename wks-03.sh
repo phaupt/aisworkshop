@@ -1,11 +1,11 @@
 #!/bin/sh
 #
-# Workshop Script to retrieve a detached timestamp token
+# Workshop Script to retrieve a detached static cms signature (ElDI-V)
 # Arguments: <infile> <outfile>
-# Example:   ./wks-01.sh sample.pdf sample.p7s
+# Example:   ./wks-03.sh sample.pdf sample.p7s
 
 # CLAIMED_ID used to identify to AIS (provided by Swisscom)
-CLAIMED_ID="IAM-Test"
+CLAIMED_ID="IAM-Test:kp1-iam-signer"
 
 # Swisscom AIS credentials
 CERT_FILE=$PWD/mycert.crt                       # The certificate that is allowed to access the service
@@ -40,8 +40,8 @@ REQ_XML='
           <ClaimedIdentity>
               <Name>'$CLAIMED_ID'</Name>
           </ClaimedIdentity>
-          <SignatureType>urn:ietf:rfc:3161</SignatureType>
-          <AdditionalProfile>urn:oasis:names:tc:dss:1.0:profiles:timestamping</AdditionalProfile>
+          <SignatureType>urn:ietf:rfc:3369</SignatureType>
+          <AddTimestamp Type="urn:ietf:rfc:3161"/>
           <sc:AddRevocationInformation Type="BOTH"/>
       </OptionalInputs>
       <InputDocuments>
