@@ -1,8 +1,9 @@
 #!/bin/sh
 #
 # Workshop Script to produce a detached signature (OnDemand certificate)
+# Based on wks-05.sh but using asynchronous mode
 # Arguments: <infile> <outfile> <dn> <msisdn> <message> <en|de|fr|it>
-# Example:   ./wks-05.sh sample.pdf sample.p7s "cn=Hans Muster,o=ACME,c=CH" 41797895164 "Sign sample.pdf ?" en
+# Example:   ./wks-08a.sh sample.pdf sample.p7s "cn=Hans Muster,o=ACME,c=CH" 41797895164 "Sign sample.pdf ?" en
 
 # CLAIMED_ID used to identify to AIS (provided by Swisscom)
 CLAIMED_ID="IAM-Test:OnDemand-Advanced"
@@ -44,6 +45,7 @@ REQ_XML='
           <ClaimedIdentity>
               <Name>'$CLAIMED_ID'</Name>
           </ClaimedIdentity>
+          <AdditionalProfile>urn:oasis:names:tc:dss:1.0:profiles:asynchronousprocessing</AdditionalProfile>
           <AdditionalProfile>http://ais.swisscom.ch/1.0/profiles/ondemandcertificate</AdditionalProfile>    
           <sc:CertificateRequest>
               <sc:DistinguishedName>'$ONDEMAND_DN'</sc:DistinguishedName>

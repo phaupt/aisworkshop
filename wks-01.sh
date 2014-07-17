@@ -22,7 +22,7 @@ FILE=$1
 [ -r "${FILE}" ] || ( echo "File to be signed ($FILE) missing or not readable" && exit 1 )
 
 # Target PKCS7 file
-PKCS7_RESULT=$3
+PKCS7_RESULT=$2
 [ -f "$PKCS7_RESULT" ] && rm -f "$PKCS7_RESULT"
 
 # Calculate the hash to be signed
