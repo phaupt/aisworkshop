@@ -10,9 +10,7 @@ CLAIMED_ID="IAM-Test:OnDemand-Advanced"
 # Swisscom AIS credentials
 CERT_FILE=$PWD/mycert.crt                       # The certificate that is allowed to access the service
 CERT_KEY=$PWD/mycert.key                        # The related key of the certificate
-
-# CA certificate file (in PEM format) for curl to verify the peer
-SSL_CA=$PWD/ais-ca-ssl.crt
+SSL_CA=$PWD/ais-ca-ssl.crt                      # Root CA Certificate (Swisscom Root CA 2)
 
 # Create temporary request
 REQUESTID=WKS.$(date +%Y-%m-%dT%H:%M:%S.%N%:z)  # Request ID
@@ -73,11 +71,10 @@ REQ_XML='
 echo "$REQ_XML" > $TMP.req
 
 # Call the service
-curl --write-out '%{http_code}\n' --silent \
+curl --output $TMP.rsp --silent \
      --request POST --data @$TMP.req \
      --header "Accept: application/xml" --header "Content-Type: application/xml;charset=utf-8" \
      --cert $CERT_FILE --cacert $SSL_CA --key $CERT_KEY \
-     --output $TMP.rsp \
      --connect-timeout $TIMEOUT_CON \
      https://ais.swisscom.com/AIS-Server/rs/v1.0/sign
 
