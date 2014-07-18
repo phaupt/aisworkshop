@@ -86,7 +86,9 @@ openssl ts -verify -data sample.pdf -in sample.der -token_in -CAfile ais-ca-sign
 
 Verify the revocation status over OCSP
 > -no_cert_verify: don't verify the OCSP response signers certificate at all
+
 > URL for Timestamp: http://ocsp.swissdigicert.ch/sdcs-tss2
+
 > URL for CMS: http://ocsp.swissdigicert.ch/sdcs-saphir2
 
 ```
