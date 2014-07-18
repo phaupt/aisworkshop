@@ -71,33 +71,38 @@ $ openssl pkcs7 -inform pem -in sample.p7s -out sample.der -outform der
 ```
 
 CMS Signatures: Verify the detached signature against original file
--noverify: don't verify signers certificate to avoid expired certificate error for OnDemand
+> -noverify: don't verify signers certificate to avoid expired certificate error for OnDemand
+
 ```
 $ openssl cms -verify -inform der -in sample.der -content sample.pdf -out sample.sig -CAfile ais-ca-signature.crt -noverify
 ```
 
 TSA Timestamp: Verify the detached signature against original file
--token_in: indicates that the input is a DER encoded time stamp token (ContentInfo) instead of a time stamp response
+> -token_in: indicates that the input is a DER encoded time stamp token (ContentInfo) instead of a time stamp response
+
 ```
 openssl ts -verify -data sample.pdf -in sample.der -token_in -CAfile ais-ca-signature.crt
 ```
 
 Verify the revocation status over OCSP
--no_cert_verify: don't verify the OCSP response signers certificate at all
-URL for Timestamp: http://ocsp.swissdigicert.ch/sdcs-tss2
-URL for CMS: http://ocsp.swissdigicert.ch/sdcs-saphir2
+> -no_cert_verify: don't verify the OCSP response signers certificate at all
+> URL for Timestamp: http://ocsp.swissdigicert.ch/sdcs-tss2
+> URL for CMS: http://ocsp.swissdigicert.ch/sdcs-saphir2
+
 ```
 openssl ocsp -CAfile ais-ca-signature.crt -issuer sample_certs.number2.pem -nonce -url http://ocsp.swissdigicert.ch/sdcs-tss2 -cert sample_certs.number1.pem -no_cert_verify  
 ```
 
 OCSP: CMS Advanced Electronic Signatures revocation-values
-object: id-smime-aa-ets-revocationValues (1.2.840.113549.1.9.16.2.24)
+> object: id-smime-aa-ets-revocationValues (1.2.840.113549.1.9.16.2.24)
+
 ```
 $ openssl cms -cmsout -noout -inform pem -in sample.p7s -print | grep 1.2.840.113549.1.9.16.2.24
 ```
 
 OCSP: PDF signature certificate revocation information attribute
-object: undefined (1.2.840.113583.1.1.8)
+> object: undefined (1.2.840.113583.1.1.8)
+
 ```
 $ openssl cms -cmsout -noout -inform pem -in sample.p7s -print | grep 1.2.840.113583.1.1.8
 ```
