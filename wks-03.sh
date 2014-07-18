@@ -62,7 +62,7 @@ curl --output $TMP.rsp --silent \
      https://ais.swisscom.com/AIS-Server/rs/v1.0/sign
 
 # SOAP/XML Parse Result
-sed -n -e 's/.*<RFC3161TimeStampToken>\(.*\)<\/RFC3161TimeStampToken>.*/\1/p' $TMP.rsp > $TMP.sig.base64 
+sed -n -e 's/.*<Base64Signature.*>\(.*\)<\/Base64Signature>.*/\1/p' $TMP.rsp > $TMP.sig.base64
 
 # Decode signature if present
 openssl enc -base64 -d -A -in $TMP.sig.base64 -out $TMP.sig.der

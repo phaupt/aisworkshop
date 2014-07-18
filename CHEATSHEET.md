@@ -1,7 +1,7 @@
 AIS Worskshop - OpenSSL Cheat Sheet
 ===========
 
-### Decode Signature Object
+### Signature Decoding
 
 Calculate a digest and get the Base64 encoded value
 ```
@@ -17,7 +17,7 @@ $ echo DrUko7j8wA2NdscB5AMNUMGbvb0HbgZGZR9oaKWU9gE= | base64 --decode | hexdump 
 00000020
 ```
 
-Decode detached CMS Signature response into DER; Content of `<Base64Signature Type="urn:ietf:rfc:3369">...</Base64Signature>`
+Decode detached CMS Signature response into DER; Content of `<Base64Signature>...</Base64Signature>`
 ```
 $ openssl enc -base64 -d -A -in sample.base64 -out sample.der
 ```
@@ -29,7 +29,7 @@ $ openssl pkcs7 -inform der -in sample.der -out sample.p7s
 
 Extract the x509 certificates from the signature and save as PEM file
 ```
-$ openssl pkcs7 -inform pem -in sample.p7s -out sample_certs.pem -print_certs > /dev/null 2>&1
+$ openssl pkcs7 -inform pem -in sample.p7s -out sample_certs.pem -print_certs
 ```
 
 Split the certificate list into separate certificates of number 0..x
@@ -63,9 +63,48 @@ Extract signed SignatureData from ASN1 Dump
 $ openssl cms -cmsout -noout -inform pem -in sample.p7s -print | sed -n '/signerInfos:/,/unsignedAttrs:/p'
 ```
 
+### Signature Verification
+
 Convert the PKCS7 (PEM) to DER, because this format is supported for both verifications (CMS / TSA)
 ```
-$ openssl pkcs7 -inform pem -in sample.p7s -out sample.der -outform der > /dev/null 2>&1
+$ openssl pkcs7 -inform pem -in sample.p7s -out sample.der -outform der
+```
+
+CMS Signatures: Verify the detached signature against original file
+-noverify: don't verify signers certificate to avoid expired certificate error for OnDemand
+```
+$ openssl cms -verify -inform der -in sample.der -content sample.pdf -out sample.sig -CAfile ais-ca-signature.crt -noverify
+```
+
+TSA Timestamp: Verify the detached signature against original file
+-token_in: indicates that the input is a DER encoded time stamp token (ContentInfo) instead of a time stamp response
+```
+openssl ts -verify -data sample.pdf -in sample.der -token_in -CAfile ais-ca-signature.crt
+```
+
+Verify the revocation status over OCSP
+-no_cert_verify: don't verify the OCSP response signers certificate at all
+URL for Timestamp: http://ocsp.swissdigicert.ch/sdcs-tss2
+URL for CMS: http://ocsp.swissdigicert.ch/sdcs-saphir2
+```
+openssl ocsp -CAfile ais-ca-signature.crt -issuer sample_certs.number2.pem -nonce -url http://ocsp.swissdigicert.ch/sdcs-tss2 -cert sample_certs.number1.pem -no_cert_verify  
+```
+
+OCSP: CMS Advanced Electronic Signatures revocation-values
+object: id-smime-aa-ets-revocationValues (1.2.840.113549.1.9.16.2.24)
+```
+$ openssl cms -cmsout -noout -inform pem -in sample.p7s -print | grep 1.2.840.113549.1.9.16.2.24
+```
+
+OCSP: PDF signature certificate revocation information attribute
+object: undefined (1.2.840.113583.1.1.8)
+```
+$ openssl cms -cmsout -noout -inform pem -in sample.p7s -print | grep 1.2.840.113583.1.1.8
+```
+
+TSA: object: id-smime-aa-timeStampToken (1.2.840.113549.1.9.16.2.14)
+```
+$ openssl cms -cmsout -noout -inform pem -in sample.p7s -print | grep 1.2.840.113549.1.9.16.2.14
 ```
 
 ### Revocation Information (OCSP/CRL)
