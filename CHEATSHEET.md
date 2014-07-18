@@ -9,7 +9,7 @@ openssl dgst -binary -SHA256 sample.pdf | openssl enc -base64 -A
 DrUko7j8wA2NdscB5AMNUMGbvb0HbgZGZR9oaKWU9gE=
 ```
 
-Display raw hex digest value (little endian); Content of <DigestValue>...</DigestValue>
+Display raw hex digest value (little endian); Content of `<DigestValue>...</DigestValue>`
 ```
 $ echo DrUko7j8wA2NdscB5AMNUMGbvb0HbgZGZR9oaKWU9gE= | base64 --decode | hexdump -C
 00000000  0e b5 24 a3 b8 fc c0 0d  8d 76 c7 01 e4 03 0d 50  |..$......v.....P|
@@ -17,7 +17,7 @@ $ echo DrUko7j8wA2NdscB5AMNUMGbvb0HbgZGZR9oaKWU9gE= | base64 --decode | hexdump 
 00000020
 ```
 
-Decode detached CMS Signature response into DER; Content of <Base64Signature Type="urn:ietf:rfc:3369">...</Base64Signature>
+Decode detached CMS Signature response into DER; Content of `<Base64Signature Type="urn:ietf:rfc:3369">...</Base64Signature>`
 ```
 $ openssl enc -base64 -d -A -in sample.base64 -out sample.der
 ```
@@ -70,12 +70,12 @@ $ openssl pkcs7 -inform pem -in sample.p7s -out sample.der -outform der > /dev/n
 
 ### Revocation Information (OCSP/CRL)
 
-Decode OCSP Object; Content of <sc:OCSP>...</sc:OCSP>
+Decode OCSP Object; Content of `<sc:OCSP>...</sc:OCSP>`
 ```
 $ echo -n <data> | openssl enc -base64 -d -A -out ocsp.der
 ```
 
-Decode CRL Object; Content of <sc:CRL>...</sc:CRL>
+Decode CRL Object; Content of `<sc:CRL>...</sc:CRL>`
 ```
 $ echo -n <data> | openssl enc -base64 -d -A -out crl.crl
 ```
