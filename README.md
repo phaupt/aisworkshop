@@ -1,4 +1,4 @@
-All-in Signing Service (AIS) - Workshop
+AIS Workshop - Script Overview
 ===========
 ```
 Workshop Script to produce a detached trusted timestamp
