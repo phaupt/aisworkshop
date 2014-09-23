@@ -31,3 +31,5 @@ sample-*.*
 *.der
 *.crl
 *.sig
+mycert.key
+mycert.crt
