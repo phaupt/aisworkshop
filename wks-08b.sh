@@ -8,8 +8,8 @@
 CLAIMED_ID="IAM-Test"
 
 # Swisscom AIS credentials
-CERT_FILE=$PWD/mycert.crt                       # The certificate that is allowed to access the service
-CERT_KEY=$PWD/mycert.key                        # The related key of the certificate
+CERT_FILE=~/keys/mycert.crt                       # The certificate that is allowed to access the service
+CERT_KEY=~/keys/mycert.key                        # The related key of the certificate
 SSL_CA=$PWD/ais-ca-ssl.crt                      # Root CA Certificate (Swisscom Root CA 2)
 
 # Create temporary request
