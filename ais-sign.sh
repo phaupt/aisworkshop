@@ -14,13 +14,13 @@
 ######################################################################
 
 # CUSTOMER used to identify to AIS (provided by Swisscom)
-CUSTOMER="IAM-Test"
-KEY_STATIC="kp1-iam-signer"
+CUSTOMER="AIS-Demo"
+KEY_STATIC="kp1-ais-demo"
 KEY_ONDEMAND="OnDemand-Advanced"
 
 # Swisscom AIS credentials
-CERT_FILE=$PWD/mycert.crt                       # The certificate that is allowed to access the service
-CERT_KEY=$PWD/mycert.key                        # The related key of the certificate
+CERT_FILE=~/keys/mycert.crt                       # The certificate that is allowed to access the service
+CERT_KEY=~/keys/mycert.key                        # The related key of the certificate
 
 
 ######################################################################

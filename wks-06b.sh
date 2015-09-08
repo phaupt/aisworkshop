@@ -2,10 +2,10 @@
 #
 # Workshop Script to poll a Response ID (asynchronous mode)
 # Arguments: <ResponseID>
-# Example:   ./wks-08b.sh bb6035f7-6ef4-419c-a6a4-bf2f6fa476aa
+# Example:   ./wks-06b.sh bb6035f7-6ef4-419c-a6a4-bf2f6fa476aa
 
 # CLAIMED_ID used to identify to AIS (provided by Swisscom)
-CLAIMED_ID="IAM-Test"
+CLAIMED_ID="AIS-Demo"
 
 # Swisscom AIS credentials
 CERT_FILE=~/keys/mycert.crt                       # The certificate that is allowed to access the service

@@ -1,11 +1,11 @@
 #!/bin/sh
 #
-# Workshop Script to produce a detached trusted timestamp
+# Workshop Script to produce a detached signature (ElDI-V static certificate)
 # Arguments: <infile> <outfile>
 # Example:   ./wks-01.sh sample.pdf sample.p7s
 
 # CLAIMED_ID used to identify to AIS (provided by Swisscom)
-CLAIMED_ID="IAM-Test"
+CLAIMED_ID="AIS-Demo:kp1-ais-demo"
 
 # Swisscom AIS credentials
 CERT_FILE=~/keys/mycert.crt                       # The certificate that is allowed to access the service
@@ -38,8 +38,8 @@ REQ_XML='
           <ClaimedIdentity>
               <Name>'$CLAIMED_ID'</Name>
           </ClaimedIdentity>
-          <SignatureType>urn:ietf:rfc:3161</SignatureType>
-          <AdditionalProfile>urn:oasis:names:tc:dss:1.0:profiles:timestamping</AdditionalProfile>
+          <SignatureType>urn:ietf:rfc:3369</SignatureType>
+          <AddTimestamp Type="urn:ietf:rfc:3161"/>
           <sc:AddRevocationInformation Type="BOTH"/>
       </OptionalInputs>
       <InputDocuments>
@@ -62,7 +62,7 @@ curl --output $TMP.rsp --silent \
      https://ais.swisscom.com/AIS-Server/rs/v1.0/sign
 
 # SOAP/XML Parse Result
-sed -n -e 's/.*<RFC3161TimeStampToken>\(.*\)<\/RFC3161TimeStampToken>.*/\1/p' $TMP.rsp > $TMP.sig.base64 
+sed -n -e 's/.*<Base64Signature.*>\(.*\)<\/Base64Signature>.*/\1/p' $TMP.rsp > $TMP.sig.base64
 
 # Decode signature if present
 openssl enc -base64 -d -A -in $TMP.sig.base64 -out $TMP.sig.der
