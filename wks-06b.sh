@@ -22,7 +22,7 @@ RESPONSEID=$1
 
 # SignRequest
 REQ_XML='
-  <async:PendingRequest Profile="http://ais.swisscom.ch/1.0"
+  <async:PendingRequest Profile="http://ais.swisscom.ch/1.1"
                         xmlns:async="urn:oasis:names:tc:dss:1.0:profiles:asynchronousprocessing:1.0"
                         xmlns="urn:oasis:names:tc:dss:1.0:core:schema" >
     <OptionalInputs>

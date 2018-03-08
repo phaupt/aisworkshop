@@ -30,7 +30,7 @@ DIGEST_VALUE=$(openssl dgst -binary -SHA256 $FILE | openssl enc -base64 -A)
 
 # SignRequest
 REQ_XML='
-  <SignRequest RequestID="'$REQUESTID'" Profile="http://ais.swisscom.ch/1.0"
+  <SignRequest RequestID="'$REQUESTID'" Profile="http://ais.swisscom.ch/1.1"
                xmlns="urn:oasis:names:tc:dss:1.0:core:schema"
                xmlns:dsig="http://www.w3.org/2000/09/xmldsig#"
                xmlns:sc="http://ais.swisscom.ch/1.0/schema">

@@ -1,8 +1,8 @@
 #!/bin/sh
 #
-# Workshop Script to produce a batch of detached trusted timestamps
-# Arguments: <infile1> <infile2> <infile3>
-# Example:   ./wks-05.sh sample.pdf sample2.pdf sample3.pdf
+# Workshop Script to produce a detached trusted timestamp
+# Arguments: <infile> <outfile>
+# Example:   ./wks-07.sh sample.pdf sample.p7s
 
 # CLAIMED_ID used to identify to AIS (provided by Swisscom)
 CLAIMED_ID="AIS-Demo"
@@ -17,22 +17,20 @@ REQUESTID=WKS.$(date +%Y-%m-%dT%H:%M:%S.%N%:z)  # Request ID
 TMP=$(mktemp -u /tmp/_tmp.XXXXXX)               # Request goes here
 TIMEOUT_CON=90                                  # Timeout of the client connection
 
-# Files to be signed
-FILE_1=$1
-FILE_2=$2
-FILE_3=$3
-[ -r "${FILE_1}" ] || ( echo "File to be signed ($FILE_1) missing or not readable" && exit 1 )
-[ -r "${FILE_2}" ] || ( echo "File to be signed ($FILE_2) missing or not readable" && exit 1 )
-[ -r "${FILE_3}" ] || ( echo "File to be signed ($FILE_3) missing or not readable" && exit 1 )
+# File to be signed
+FILE=$1
+[ -r "${FILE}" ] || ( echo "File to be signed ($FILE) missing or not readable" && exit 1 )
+
+# Target PKCS7 file
+PKCS7_RESULT=$2
+[ -f "$PKCS7_RESULT" ] && rm -f "$PKCS7_RESULT"
 
 # Calculate the hash to be signed
-DIGEST_VALUE_1=$(openssl dgst -binary -SHA256 $FILE_1 | openssl enc -base64 -A)
-DIGEST_VALUE_2=$(openssl dgst -binary -SHA256 $FILE_2 | openssl enc -base64 -A)
-DIGEST_VALUE_3=$(openssl dgst -binary -SHA256 $FILE_3 | openssl enc -base64 -A)
+DIGEST_VALUE=$(openssl dgst -binary -SHA256 $FILE | openssl enc -base64 -A)
 
 # SignRequest
 REQ_XML='
-  <SignRequest RequestID="'$REQUESTID'" Profile="http://ais.swisscom.ch/1.1"
+  <SignRequest RequestID="'$REQUESTID'" Profile="http://ais.swisscom.ch/1.0"
                xmlns="urn:oasis:names:tc:dss:1.0:core:schema"
                xmlns:dsig="http://www.w3.org/2000/09/xmldsig#"
                xmlns:sc="http://ais.swisscom.ch/1.0/schema">
@@ -42,20 +40,12 @@ REQ_XML='
           </ClaimedIdentity>
           <SignatureType>urn:ietf:rfc:3161</SignatureType>
           <AdditionalProfile>urn:oasis:names:tc:dss:1.0:profiles:timestamping</AdditionalProfile>
-          <AdditionalProfile>http://ais.swisscom.ch/1.0/profiles/batchprocessing</AdditionalProfile>
+          <sc:AddRevocationInformation Type="BOTH"/>
       </OptionalInputs>
       <InputDocuments>
-          <DocumentHash ID="'$FILE_1'">
+          <DocumentHash>
               <dsig:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
-              <dsig:DigestValue>'$DIGEST_VALUE_1'</dsig:DigestValue>
-          </DocumentHash>
-          <DocumentHash ID="'$FILE_2'">
-              <dsig:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
-              <dsig:DigestValue>'$DIGEST_VALUE_2'</dsig:DigestValue>
-          </DocumentHash>
-          <DocumentHash ID="'$FILE_3'">
-              <dsig:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
-              <dsig:DigestValue>'$DIGEST_VALUE_3'</dsig:DigestValue>
+              <dsig:DigestValue>'$DIGEST_VALUE'</dsig:DigestValue>
           </DocumentHash>
       </InputDocuments>
   </SignRequest>'
@@ -71,6 +61,14 @@ curl --output $TMP.rsp --silent \
      --connect-timeout $TIMEOUT_CON \
      https://ais.swisscom.com/AIS-Server/rs/v1.0/sign
 
+# SOAP/XML Parse Result
+sed -n -e 's/.*<RFC3161TimeStampToken>\(.*\)<\/RFC3161TimeStampToken>.*/\1/p' $TMP.rsp > $TMP.sig.base64 
+
+# Decode signature if present
+openssl enc -base64 -d -A -in $TMP.sig.base64 -out $TMP.sig.der
+# Save PKCS7 content to target
+openssl pkcs7 -inform der -in $TMP.sig.der -out $PKCS7_RESULT
+
 # Print Request/Response content
 echo ""
 [ -f "$TMP.req" ] && cat $TMP.req | xmllint --format -
@@ -81,3 +79,5 @@ echo ""
 # Cleanup
 [ -f "$TMP.req" ] && rm $TMP.req
 [ -f "$TMP.rsp" ] && rm $TMP.rsp
+[ -f "$TMP.sig.base64" ] && rm $TMP.sig.base64
+[ -f "$TMP.sig.der" ] && rm $TMP.sig.der
