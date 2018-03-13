@@ -9,8 +9,9 @@
 [ -f "$2" ] && rm -f $2
 
 # Call iText Java application
-java -cp ".:./itext/lib/*:./itext/jar/*" com.swisscom.ais.itext.SignPDF -vv -config=./itext/signpdf.properties -type=sign -dn="$3" -midMsisdn=$4 -midMsg="$5" -midLang=$6 -infile=$1 -outfile=$2 -reason="AIS Workshop Test" -location="Zürich"
+java -cp ".:./itext/lib/*:./itext/jar/*" com.swisscom.ais.itext.SignPDF -vv -d -config=./itext/signpdf.properties -type=sign -dn="$3" -stepupmsisdn=$4 -stepupmsg="$5" -stepuplang=$6 -infile=$1 -outfile=$2 -reason="AIS Workshop Test" -location="Zürich"
 
 # Alternative Call with additional SerialNumber-Check: -midSerialNumber=MIDCHEODWD9XJPQ4
-# java -cp ".:./itext/lib/*:./itext/jar/*" com.swisscom.ais.itext.SignPDF -vv -config=./itext/signpdf.properties -type=sign -dn="$3" -midMsisdn=$4 -midMsg="$5" -midLang=$6 -midSerialNumber=MIDCHEODWD9XJPQ5 -infile=$1 -outfile=$2 -reason="AIS Workshop Test" -location="Zürich"
+# java -cp ".:./itext/lib/*:./itext/jar/*" com.swisscom.ais.itext.SignPDF -vv -config=./itext/signpdf.properties -type=sign -dn="$3" -stepupMsisdn=$4 -stepupMsg="$5" -stepupLang=$6 -stepupSerialNumber=MIDCHEODWD9XJPQ5 -infile=$1 -outfile=$2 -reason="AIS Workshop Test" -location="Zürich"
+
 
