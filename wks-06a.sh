@@ -1,9 +1,8 @@
 #!/bin/sh
 #
 # Workshop Script to produce a detached signature (OnDemand certificate)
-# Based on wks-04.sh but using asynchronous mode
 # Arguments: <infile> <outfile> <dn> <msisdn> <message> <en|de|fr|it>
-# Example:   ./wks-06a.sh sample.pdf sample.p7s "cn=Hans Muster,o=ACME,c=CH" 41797895164 "Sign sample.pdf ?" en
+# Example: ./wks-06a.sh sample.pdf sample-ondemand.pdf 'cn=Hans Mustermann, organizationalUnitName=For test purposes only!, organizationName=Swisscom AG TEST, countryName=CH' 41791234567 'Sign sample.pdf? (#TRANSID#)' en
 
 # CLAIMED_ID used to identify to AIS (provided by Swisscom)
 CLAIMED_ID="AIS-Demo:OnDemand-Advanced"
@@ -73,7 +72,7 @@ REQ_XML='
 echo "$REQ_XML" > $TMP.req
 
 # Call the service
-curl --output $TMP.rsp --silent \
+curl -v --output $TMP.rsp --silent \
      --request POST --data @$TMP.req \
      --header "Accept: application/xml" --header "Content-Type: application/xml;charset=utf-8" \
      --cert $CERT_FILE --cacert $SSL_CA --key $CERT_KEY \

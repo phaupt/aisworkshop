@@ -2,7 +2,8 @@
 #
 # Workshop Script to sign a PDF document (OnDemand certificate)
 # Arguments: <infile> <outfile> <dn> <msisdn> <message> <en|de|fr|it>
-# Example:   ./wks-03.sh sample.pdf sample-ondemand.pdf "cn=Hans Muster,o=ACME,c=CH" 41791234567 "Sign sample.pdf ?" en
+# Example: ./wks-03.sh sample.pdf sample-ondemand.pdf 'cn=Hans Mustermann, organizationalUnitName=For test purposes only!, organizationName=Swisscom AG TEST, countryName=CH' 41791234567 'Sign sample.pdf? (#TRANSID#)' en
+
 
 # Remove existing target file
 [ -f "$2" ] && rm -f $2
