@@ -46,6 +46,7 @@ REQ_XML='
           </ClaimedIdentity>
           <AdditionalProfile>urn:oasis:names:tc:dss:1.0:profiles:asynchronousprocessing</AdditionalProfile>
           <AdditionalProfile>http://ais.swisscom.ch/1.0/profiles/ondemandcertificate</AdditionalProfile>    
+	  <AdditionalProfile>http://ais.swisscom.ch/1.1/profiles/redirect</AdditionalProfile>
           <sc:CertificateRequest>
               <sc:DistinguishedName>'$ONDEMAND_DN'</sc:DistinguishedName>
               <sc:StepUpAuthorisation>
@@ -72,7 +73,7 @@ REQ_XML='
 echo "$REQ_XML" > $TMP.req
 
 # Call the service
-curl -v --output $TMP.rsp --silent \
+curl --output $TMP.rsp --silent \
      --request POST --data @$TMP.req \
      --header "Accept: application/xml" --header "Content-Type: application/xml;charset=utf-8" \
      --cert $CERT_FILE --cacert $SSL_CA --key $CERT_KEY \
