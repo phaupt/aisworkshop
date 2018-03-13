@@ -83,9 +83,9 @@ curl -v --output $TMP.rsp --silent \
 sed -n -e 's/.*<RFC3161TimeStampToken>\(.*\)<\/RFC3161TimeStampToken>.*/\1/p' $TMP.rsp > $TMP.sig.base64 
 
 # Decode signature if present
-openssl enc -base64 -d -A -in $TMP.sig.base64 -out $TMP.sig.der
+#openssl enc -base64 -d -A -in $TMP.sig.base64 -out $TMP.sig.der
 # Save PKCS7 content to target
-openssl pkcs7 -inform der -in $TMP.sig.der -out $PKCS7_RESULT
+#openssl pkcs7 -inform der -in $TMP.sig.der -out $PKCS7_RESULT
 
 # Print Request/Response content
 echo ""
