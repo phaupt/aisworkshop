@@ -1,0 +1,30 @@
+############################### wks-01 ###############################
+# Workshop Script to produce a detached signature (static certificate)
+# Arguments: <infile> <outfile>
+# Example:   ./wks-01.sh sample.pdf sample.p7s
+
+############################### wks-02 ###############################
+# Workshop Script to sign a PDF document (static certificate)
+# Arguments: <infile> <outfile>
+# Example:   ./wks-02.sh sample.pdf sample-static.pdf
+
+############################### wks-03 ###############################
+# Workshop Script to sign a PDF document (OnDemand certificate)
+# Arguments: <infile> <outfile> <dn> <msisdn> <message> <en|de|fr|it>
+# Example: ./wks-03.sh sample.pdf sample-ondemand.pdf 'cn=Hans Mustermann, organizationalUnitName=For test purposes only!, organizationName=Swisscom AG TEST, countryName=CH' 41791234567 'Sign sample.pdf? (#TRANSID#)' en
+
+############################### wks-05 ###############################
+# Workshop Script to produce a batch of detached trusted timestamps
+# Arguments: <infile1> <infile2> <infile3>
+# Example:   ./wks-05.sh sample.pdf sample2.pdf sample3.pdf
+
+############################### wks-06 ###############################
+# Workshop Script to produce a detached signature (OnDemand certificate)
+# Arguments: <infile> <outfile> <dn> <msisdn> <message> <en|de|fr|it>
+# Example: ./wks-06a.sh sample.pdf sample-ondemand.pdf 'cn=Hans Mustermann, organizationalUnitName=For test purposes only!, organizationName=Swisscom AG TEST, countryName=CH' 41791234567 'Sign sample.pdf? (#TRANSID#)' en
+
+# Workshop Script to poll a Response ID (asynchronous mode)
+# Arguments: <ResponseID>
+# Example:   ./wks-06b.sh bb6035f7-6ef4-419c-a6a4-bf2f6fa476aa
+
+
