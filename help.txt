@@ -21,7 +21,7 @@
 ############################### wks-06 ###############################
 # Workshop Script to produce a detached signature (OnDemand certificate)
 # Arguments: <infile> <outfile> <dn> <msisdn> <message> <en|de|fr|it>
-# Example: ./wks-06a.sh sample.pdf sample-ondemand.pdf 'cn=TEST Hans Mustermann, givenname=Hans, surname=Mustermann, o=TEST Swisscom (Schweiz) AG, ou=Certificate and signatures for test purpose only, c=CH, emailaddress=hans.mustermann@swisscom.com' en
+# Example: ./wks-06a.sh sample.pdf sample-ondemand.pdf 'cn=TEST Hans Mustermann, givenname=Hans, surname=Mustermann, o=TEST Swisscom (Schweiz) AG, ou=Certificate and signatures for test purpose only, c=CH, emailaddress=hans.mustermann@swisscom.com' 41791234567 "Sign sample.pdf?" en
 
 # Workshop Script to poll a Response ID (asynchronous mode)
 # Arguments: <ResponseID>
