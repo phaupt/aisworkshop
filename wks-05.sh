@@ -64,7 +64,7 @@ REQ_XML='
 echo "$REQ_XML" > $TMP.req
 
 # Call the service
-curl --output $TMP.rsp --silent \
+curl -k --output $TMP.rsp --silent \
      --request POST --data @$TMP.req \
      --header "Accept: application/xml" --header "Content-Type: application/xml;charset=utf-8" \
      --cert $CERT_FILE --cacert $SSL_CA --key $CERT_KEY \
