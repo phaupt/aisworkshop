@@ -1,5 +1,4 @@
 #!/bin/sh
-set -x
 
 #
 # Workshop Script to produce a detached signature (OnDemand certificate)
